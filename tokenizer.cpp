@@ -60,6 +60,70 @@ QList<QString> tokenizer::toExpTokens(QString expString)
     return expTokens;
 }
 
+QList<QString> tokenizer::toStringTokens(QString line, bool &flag)
+{
+    QList<QString> strTokens;
+    int pos1, pos2;
+    flag = true;
+    bool big = false, little = false, expectComma = false;   //big代表双引号，little代表单引号
+    for (pos1=pos2=0;pos2<line.length();++pos2) {
+        if(line[pos2]=='\"') {
+            if(little||expectComma) {
+                flag = false;
+                return strTokens;
+            }
+            if(big) {
+                strTokens.push_back(line.mid(pos1, pos2-pos1+1));
+                pos1 = pos2+1;
+                expectComma = true;
+            }
+            big=!big;
+            continue;
+        }
+        if(line[pos2]=='\'') {
+            if(big||expectComma) {
+                flag = false;
+                return strTokens;
+            }
+            if(little) {
+                strTokens.push_back(line.mid(pos1, pos2-pos1+1));
+                pos1 = pos2+1;
+                expectComma = true;
+            }
+            little=!little;
+            continue;
+        }
+        if(line[pos2]==',') {
+            if(little||big) {
+                continue;
+            }
+            if(expectComma)
+                expectComma = false;
+            else {
+                strTokens.push_back(line.mid(pos1, pos2-pos1));
+            }
+            pos1 = pos2+1;
+            continue;
+        }
+        if(expectComma&&line[pos2]!=',') {
+            if(line[pos2]==' ')
+                continue;
+            flag = false;
+            return strTokens;
+        }
+    }
+    if(pos1<line.length())
+        strTokens.push_back(line.mid(pos1));
+    for (int i=0;i<strTokens.size();++i) {
+        strTokens[i]=strTokens[i].trimmed();
+        if(!((strTokens[i].front()=='\"'&&strTokens[i].back()=='\"')||(strTokens[i].front()=='\''&&strTokens[i].back()=='\'')))
+            strTokens[i].remove(QRegExp("\\s"));   //用正则表达式移除变量内所有空格
+    }
+    if(!((strTokens[0].front()=='\"'&&strTokens[0].back()=='\"')||(strTokens[0].front()=='\''&&strTokens[0].back()=='\'')))
+        flag = false;
+    return strTokens;
+}
+
 QString tokenizer::getToken(int i)
 {
     return tokens[i];

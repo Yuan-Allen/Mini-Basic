@@ -4,8 +4,8 @@
 130 LET n2   =1
 140 IF n1>  max THEN    1       9 0
 150 LET n3=n 1     +n   2
-160 LET n 1 =n2
+160 LET n 1+=n2
 170 LET n2=n3
 180 GOTO 140
 190 END
-145 PRINT n 1
+145 PRINTF n 1

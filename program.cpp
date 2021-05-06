@@ -5,6 +5,11 @@ program::program()
 
 }
 
+program::~program()
+{
+    clear();
+}
+
 void program::addNewStmtString(int lineNum, QString line)
 {
     stmtStrings[lineNum]=line;
@@ -25,6 +30,14 @@ void program::removeStatement(int lineNum)
 
 void program::clear()
 {
+    for (QMap<int, statement*>::iterator it = stmts.begin();it!=stmts.end();++it) {
+        delete it.value();
+    }
     stmts.clear();
     stmtStrings.clear();
+}
+
+void program::clearStmts()
+{
+    stmts.clear();
 }

@@ -17,33 +17,39 @@ parser::parser(evalstate *state)
 
 statement* parser::parse(QString line)
 {
-    myTokenizer.toTokens(line);
+    QList<QString> tokens =  myTokenizer.toTokens(line);
     statement * newStatement = nullptr;
-    if (myTokenizer.getToken(0)=="REM") {
-        newStatement = new remStmt(myTokenizer.getTokens(), state);
+    if (remStmt::isLegal(tokens)) {
+        newStatement = new remStmt(tokens, state);
     }
-    else if (myTokenizer.getToken(0)=="LET") {
-        newStatement = new letStmt(myTokenizer.getTokens(), state);
+    else if (letStmt::isLegal(tokens)) {
+        newStatement = new letStmt(tokens, state);
     }
-    else if (myTokenizer.getToken(0)=="PRINT") {
-        newStatement = new printStmt(myTokenizer.getTokens(), state);
+    else if (printStmt::isLegal(tokens)) {
+        newStatement = new printStmt(tokens, state);
     }
-    else if (myTokenizer.getToken(0)=="INPUT") {
-        newStatement = new inputStmt(myTokenizer.getTokens(), state);
+    else if (inputStmt::isLegal(tokens)) {
+        newStatement = new inputStmt(tokens, state);
     }
-    else if (myTokenizer.getToken(0)=="GOTO") {
-        newStatement = new gotoStmt(myTokenizer.getTokens(), state);
+    else if (gotoStmt::isLegal(tokens)) {
+        newStatement = new gotoStmt(tokens, state);
     }
-    else if (myTokenizer.getToken(0)=="IF") {
-        newStatement = new ifStmt(myTokenizer.getTokens(), state);
+    else if (ifStmt::isLegal(tokens)) {
+        newStatement = new ifStmt(tokens, state);
     }
-    else if (myTokenizer.getToken(0)=="END") {
-        newStatement = new endStmt(myTokenizer.getTokens(), state);
+    else if (endStmt::isLegal(tokens)) {
+        newStatement = new endStmt(tokens, state);
     }
-    if(!newStatement) {
-        QString error("Illegal Statement!");
-        throw error;
+    else if(inputsStmt::isLegal(tokens)) {
+        newStatement = new inputsStmt(tokens, state);
     }
+    else if(printfStmt::isLegal(tokens)) {
+        newStatement = new printfStmt(tokens, state);
+    }
+//    if(!newStatement) {
+//        QString error("Illegal Statement!");
+//        throw error;
+//    }
     return newStatement;
 }
 
@@ -182,3 +188,4 @@ bool parser::isVar(QString var)
 {
     return (precedence(var)==-1&&var!=")");
 }
+

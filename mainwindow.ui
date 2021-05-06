@@ -55,21 +55,46 @@
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_8">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>语句与语法树</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>当前变量</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTextBrowser" name="varibleDisplay"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>语句与语法树</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTextBrowser" name="treeDisplay"/>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QTextBrowser" name="treeDisplay"/>
-        </item>
-        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="btnDebug">
+            <property name="text">
+             <string>调试/单步(Debug/Step)</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QPushButton" name="btnLoadCode">
             <property name="text">

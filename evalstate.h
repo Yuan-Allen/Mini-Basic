@@ -8,17 +8,22 @@
 
 class evalstate {
 
+    friend class MainWindow;
 public:
 
    evalstate();
    void setValue(QString var, int value);
+   void setValue(QString var, QString sValue);  //重载，用来存字符串型变量
    int getValue(QString var);
-   bool isDefined(QString var);
+   QString getString(QString var);  //获取字符串型变量值
+   bool isDefinedInt(QString var);
+   bool isDefinedString(QString var);   //字符串型变量是否被定义
    void clear();
 
 private:
 
-   QMap<QString,int> symbolTable;
+   QMap<QString, int> symbolTable;  //存int型变量
+   QMap<QString, QString> stringSymTable;   //存字符串型变量
 
 };
 
